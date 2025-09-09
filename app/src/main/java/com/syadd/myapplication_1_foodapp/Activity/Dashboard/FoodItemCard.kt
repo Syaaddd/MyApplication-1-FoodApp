@@ -1,12 +1,17 @@
 package com.syadd.myapplication_1_foodapp.Activity.Dashboard
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,8 +28,10 @@ import com.syadd.myapplication_1_foodapp.Domain.FoodModel
 import com.syadd.myapplication_1_foodapp.Helper.previewFood
 import com.syadd.myapplication_1_foodapp.R
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import java.nio.file.WatchEvent
 
 @Composable
 @Preview
@@ -55,13 +62,60 @@ fun FoodItemCardGrid(item: FoodModel) {
             contentScale = ContentScale.Crop
         )
 
-        Text(text=item.Title,
+        Text(
+            text=item.Title,
             color = colorResource(R.color.darkPurple),
             fontSize=14.sp,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top=5.dp, start = 8.dp, end = 8.dp), 
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Image(
+                painter = painterResource(R.drawable.star),
+                contentDescription = null,
+                modifier = Modifier.size(15.dp)
             )
+            Text(
+                text = "${item.Star}",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 2.dp)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 6.dp, bottom = 2.dp, start = 8.dp, end = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text(
+                text = "${item.Price}",
+                color = colorResource(R.color.darkPurple),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Image(
+                    painter = painterResource(R.drawable.time),
+                    contentDescription = null,
+                    modifier = Modifier.size(13.dp)
+                )
+                Text(
+                    text = "${item.TimeValue} min",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(start = 2.dp)
+                )
+            }
+        }
     }
 }

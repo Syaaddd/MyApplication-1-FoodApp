@@ -113,8 +113,8 @@ fun MainScreen() {
                     }
                 }
             } else {
-                item(span = { GridItemSpan(2) }) {
-
+                items(bestFood.size) {index->
+                    FoodItemCardGrid(item=bestFood[index])
                 }
             }
         }

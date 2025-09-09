@@ -33,26 +33,26 @@ class MainRepository {
         return listData
     }
 
-    fun loadBestFood(): LiveData<MutableList<FoodModel>> {
-        val listData = MutableLiveData<MutableList<FoodModel>>()
-        val ref = firebaseDatabase.getReference("Foods")
-        val query: Query = ref.orderByChild("BestFood").equalTo(true)
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+    fun loadBestFood(): LiveData<MutableList<FoodModel>>{
+        val listData= MutableLiveData<MutableList<FoodModel>>()
+        val ref=firebaseDatabase.getReference("Foods")
+        val query: Query=ref.orderByChild("BestFood").equalTo(true)
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = mutableListOf<FoodModel>()
-                for (childSnapshot in snapshot.children) {
-                    val food = childSnapshot.getValue(FoodModel::class.java)
-                    food?.let { list.add(it) }
-                }
-                listData.value = list
+                val lists=mutableListOf<FoodModel>()
+                    for (childSnapshot in snapshot.children){
+                        val list = childSnapshot.getValue(FoodModel::class.java)
+                        if (list!=null){
+                            lists.add(list)
+                        }
+                    }
+                listData.value = lists
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle error kalau dibutuhkan
+                TODO("Not yet implemented")
             }
         })
-
         return listData
     }
 }
