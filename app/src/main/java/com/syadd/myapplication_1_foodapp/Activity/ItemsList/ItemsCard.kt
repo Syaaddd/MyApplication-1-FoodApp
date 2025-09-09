@@ -33,7 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import okhttp3.internal.wait
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun ItemsLIst(items:List<FoodModel>){
@@ -43,6 +44,14 @@ fun ItemsLIst(items:List<FoodModel>){
         }
     }
 }
+fun Double.toRupiah(price: Double): String {
+    val localeID = Locale("in", "ID")
+    val format = NumberFormat.getCurrencyInstance(localeID)
+    format.minimumFractionDigits = 0   // hilangkan ,00
+    format.maximumFractionDigits = 0   // tidak tampilkan desimal
+    return format.format(this)
+}
+
 
 @Preview
 @Composable
@@ -93,16 +102,14 @@ fun RowScope.FoodDetail(item: FoodModel) {
 fun PriceRow(price: Double) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(top = 8.dp)
-    ){
+        modifier = Modifier.padding(top = 8.dp)
+    ) {
         Text(
-            text = "Rp${price}",
+            text = price.toRupiah(price),
             color = colorResource(R.color.darkPurple),
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(1f)
         )
         Text(
             text = "+ Add",

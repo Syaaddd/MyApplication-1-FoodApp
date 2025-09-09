@@ -32,12 +32,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import java.nio.file.WatchEvent
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 @Preview
 fun FoodItemCardGridPreview() {
     FoodItemCardGrid(item = previewFood)
 }
+
+fun Double.toRupiah(): String {
+    val localeID = Locale("in", "ID")
+    val format = NumberFormat.getCurrencyInstance(localeID)
+    format.minimumFractionDigits = 0   // hilangkan ,00
+    format.maximumFractionDigits = 0   // tidak tampilkan desimal
+    return format.format(this)
+}
+
 
 @Composable
 fun FoodItemCardGrid(item: FoodModel) {
@@ -97,7 +108,7 @@ fun FoodItemCardGrid(item: FoodModel) {
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Text(
-                text = "${item.Price}",
+                text = item.Price.toRupiah(),
                 color = colorResource(R.color.darkPurple),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
