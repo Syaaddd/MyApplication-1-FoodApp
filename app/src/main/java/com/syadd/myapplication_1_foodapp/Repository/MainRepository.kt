@@ -78,4 +78,28 @@ class MainRepository {
         })
         return listData
     }
+    
+    fun loadFoodDetail(foodId: Int): LiveData<FoodModel> {
+        val foodData = MutableLiveData<FoodModel>()
+        val ref = firebaseDatabase.getReference("Foods")
+        val query: Query = ref.orderByChild("Id").equalTo(foodId.toDouble())
+        
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (childSnapshot in snapshot.children) {
+                    val food = childSnapshot.getValue(FoodModel::class.java)
+                    if (food != null) {
+                        foodData.value = food
+                        break
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+        
+        return foodData
+    }
 }

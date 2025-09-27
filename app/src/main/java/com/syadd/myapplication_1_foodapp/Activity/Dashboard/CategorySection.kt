@@ -1,5 +1,6 @@
 package com.syadd.myapplication_1_foodapp.Activity.Dashboard
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +26,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import coil.compose.AsyncImage
+import com.syadd.myapplication_1_foodapp.Activity.ItemsList.ItemsListActivity
 import com.syadd.myapplication_1_foodapp.Domain.CategoryModel
 import com.syadd.myapplication_1_foodapp.R
 
@@ -65,7 +68,11 @@ fun CategorySection(
                                     .weight(1f)
                                     .padding(horizontal = 12.dp),
                                 onItemClick = {
-
+                                    val intent = Intent(context, ItemsListActivity::class.java).apply {
+                                        putExtra("id", categoryModel.Id.toString())
+                                        putExtra("title", categoryModel.Name)
+                                    }
+                                    startActivity(context,intent,null)
                                 }
                             )
                         }

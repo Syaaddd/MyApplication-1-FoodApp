@@ -40,7 +40,7 @@ import java.util.Locale
 fun ItemsLIst(items:List<FoodModel>){
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)){
         itemsIndexed(items) { index, item->
-
+            Items(item = item)
         }
     }
 }

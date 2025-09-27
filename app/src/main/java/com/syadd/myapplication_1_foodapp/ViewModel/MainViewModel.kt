@@ -5,6 +5,7 @@ import com.syadd.myapplication_1_foodapp.Domain.CategoryModel
 import com.syadd.myapplication_1_foodapp.Domain.FoodModel
 import com.syadd.myapplication_1_foodapp.Repository.MainRepository
 
+
 class MainViewModel {
     private val repository = MainRepository()
 
@@ -19,5 +20,9 @@ class MainViewModel {
 
     fun loadFiltered(id: String): LiveData<MutableList<FoodModel>>{
         return repository.loadFiltered(id)
+    }
+    
+    fun loadFoodDetail(foodId: Int): LiveData<FoodModel> {
+        return repository.loadFoodDetail(foodId)
     }
 }

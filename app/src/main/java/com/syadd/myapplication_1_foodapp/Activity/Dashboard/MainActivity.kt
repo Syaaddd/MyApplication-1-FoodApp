@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.syadd.myapplication_1_foodapp.Domain.CategoryModel
 import com.syadd.myapplication_1_foodapp.Domain.FoodModel
 import com.syadd.myapplication_1_foodapp.R
@@ -37,14 +38,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainScreen()
+            AppNavigation()
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainScreen() {
+fun MainScreenWithNav(navController: NavHostController) {
     val scaffoldState = rememberScaffoldState()
     val viewModel = MainViewModel()
 
@@ -71,7 +71,7 @@ fun MainScreen() {
         }
     }
     Scaffold(
-        bottomBar = { MyBottomBar() },
+        bottomBar = { MyBottomBar(navController) },
         scaffoldState = scaffoldState
     ) { paddingValues ->
         LazyVerticalGrid(
@@ -79,6 +79,7 @@ fun MainScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(colorResource(R.color.lightGrey))
+                .padding(bottom = 80.dp) // Memberikan ruang untuk bottom bar
                 .padding(paddingValues),
             contentPadding = PaddingValues(8.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -114,7 +115,10 @@ fun MainScreen() {
                 }
             } else {
                 items(bestFood.size) {index->
-                    FoodItemCardGrid(item=bestFood[index])
+                    FoodItemCardGrid(item=bestFood[index]) {
+                        // Navigasi ke halaman detail makanan saat item diklik
+                        navController.navigate("food_detail/${bestFood[index].Id}")
+                    }
                 }
             }
         }

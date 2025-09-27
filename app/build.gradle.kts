@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.material3)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,4 +72,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
     implementation("androidx.compose.foundation:foundation:1.7.6")
+    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("com.google.android.material:material:1.9.0")
+    
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.8.0")
 }

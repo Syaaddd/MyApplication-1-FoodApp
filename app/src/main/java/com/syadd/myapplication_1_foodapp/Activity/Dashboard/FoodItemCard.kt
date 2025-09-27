@@ -42,8 +42,8 @@ fun FoodItemCardGridPreview() {
 }
 
 fun Double.toRupiah(): String {
-    val localeID = Locale("in", "ID")
-    val format = NumberFormat.getCurrencyInstance(localeID)
+    val localeID = java.util.Locale("in", "ID")
+    val format = java.text.NumberFormat.getCurrencyInstance(localeID)
     format.minimumFractionDigits = 0   // hilangkan ,00
     format.maximumFractionDigits = 0   // tidak tampilkan desimal
     return format.format(this)
@@ -51,7 +51,7 @@ fun Double.toRupiah(): String {
 
 
 @Composable
-fun FoodItemCardGrid(item: FoodModel) {
+fun FoodItemCardGrid(item: FoodModel, onClick: () -> Unit = {}) {
     val context = LocalContext.current
 
     Column(
@@ -60,7 +60,7 @@ fun FoodItemCardGrid(item: FoodModel) {
             .fillMaxWidth()
             .background(colorResource(R.color.white), shape = RoundedCornerShape(14.dp))
             .clip(RoundedCornerShape(14.dp))
-            .clickable{},
+            .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
