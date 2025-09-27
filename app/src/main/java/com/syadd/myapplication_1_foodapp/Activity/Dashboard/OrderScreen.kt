@@ -2,6 +2,7 @@ package com.syadd.myapplication_1_foodapp.Activity.Dashboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -69,8 +70,10 @@ fun OrderScreen(navController: NavController) {
                     },
                     modifier = Modifier
                         .padding(top = 24.dp)
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple))
+                        .height(50.dp)
+                        .background(colorResource(R.color.darkPurple), shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+                    elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
                 ) {
                     Text(
                         text = "Start Ordering",

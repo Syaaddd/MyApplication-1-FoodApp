@@ -4,6 +4,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -177,7 +179,7 @@ fun FavoriteItem(
                 onClick = onRemoveFromFavorite,
                 modifier = Modifier
                     .size(36.dp)
-                    .background(colorResource(R.color.lightGrey), shape = androidx.compose.foundation.shape.CircleShape)
+                    .background(colorResource(R.color.lightGrey), shape = CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.Default.Favorite,

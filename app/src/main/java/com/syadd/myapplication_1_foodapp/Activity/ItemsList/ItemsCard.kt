@@ -115,13 +115,14 @@ fun PriceRow(price: Double) {
             text = "+ Add",
             color = Color.White,
             fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .padding(8.dp)
                 .background(
-                    color = colorResource(R.color.green),
+                    color = colorResource(R.color.darkPurple),
                     shape = RoundedCornerShape(10.dp)
                 )
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 12.dp, vertical = 4.dp)
         )
     }
 }

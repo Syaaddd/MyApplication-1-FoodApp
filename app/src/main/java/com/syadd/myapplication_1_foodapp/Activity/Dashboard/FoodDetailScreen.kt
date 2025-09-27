@@ -436,11 +436,13 @@ fun RecommendedFoodItem(food: FoodModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
-                .height(30.dp),
+                .height(30.dp)
+                .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(8.dp)),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = colorResource(R.color.darkPurple),
                 contentColor = Color.White
             ),
+            elevation = ButtonDefaults.elevation(defaultElevation = 2.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
             Text(
@@ -484,22 +486,22 @@ fun FoodDetailFooter(
             }
             
             Button(
-                onClick = onOrderClick,
-                modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-                    .padding(start = 16.dp)
-                    .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(16.dp)),
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
-                elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
-            ) {
-                Text(
-                    text = "Place an Order",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            onClick = onOrderClick,
+            modifier = Modifier
+                .height(50.dp)
+                .weight(1f)
+                .padding(start = 16.dp)
+                .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(16.dp)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+            elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
+        ) {
+            Text(
+                text = "Place an Order",
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
         }
     }
 }

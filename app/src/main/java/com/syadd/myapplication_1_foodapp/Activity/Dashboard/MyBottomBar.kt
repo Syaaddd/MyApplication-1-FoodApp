@@ -2,6 +2,7 @@ package com.syadd.myapplication_1_foodapp.Activity.Dashboard
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -71,7 +72,7 @@ fun MyBottomBar(navController: NavController) {
                         contentDescription = null,
                         modifier = Modifier
                             .padding(top = 8.dp)
-                            .size(20.dp)
+                            .size(24.dp)
                     )
                 }
             )

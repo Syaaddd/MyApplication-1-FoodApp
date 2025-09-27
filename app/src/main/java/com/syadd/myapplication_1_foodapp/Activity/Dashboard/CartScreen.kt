@@ -1,9 +1,8 @@
-package com.syadd.myapplication_1_foodapp.Activity.Dashboard
-
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -24,7 +23,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.syadd.myapplication_1_foodapp.Domain.FoodModel
 import com.syadd.myapplication_1_foodapp.Helper.CartManager
-import com.syadd.myapplication_1_foodapp.Helper.FavoriteManager
 import com.syadd.myapplication_1_foodapp.Helper.toRupiah
 import com.syadd.myapplication_1_foodapp.R
 import com.syadd.myapplication_1_foodapp.ViewModel.MainViewModel
@@ -117,22 +115,24 @@ fun CartScreen(navController: NavController) {
                         }
                         
                         Button(
-                            onClick = {
-                                // Di sini Anda bisa menambahkan logika untuk checkout
-                            },
-                            modifier = Modifier
-                                .height(50.dp)
-                                .weight(1f)
-                                .padding(start = 16.dp),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple))
-                        ) {
-                            Text(
-                                text = "Checkout",
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                onClick = {
+                    // Di sini Anda bisa menambahkan logika untuk checkout
+                },
+                modifier = Modifier
+                    .height(50.dp)
+                    .weight(1f)
+                    .padding(start = 16.dp)
+                    .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(16.dp)),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+                elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
+            ) {
+                Text(
+                    text = "Checkout",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
                     }
                 }
             }
@@ -187,36 +187,34 @@ fun CartItem(food: FoodModel, onQuantityChange: (Int) -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Quantity controls
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
+                Button(
+                    onClick = { 
+                        val newQty = food.numberInCart - 1
+                        onQuantityChange(newQty)
+                    },
+                    modifier = Modifier.size(30.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+                    shape = RoundedCornerShape(8.dp)
                 ) {
-                    Button(
-                        onClick = { 
-                            val newQty = food.numberInCart - 1
-                            onQuantityChange(newQty)
-                        },
-                        modifier = Modifier.size(30.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple))
-                    ) {
-                        Text("-", fontSize = 14.sp)
-                    }
-                    
-                    Text(
-                        text = food.numberInCart.toString(),
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        fontSize = 16.sp
-                    )
-                    
-                    Button(
-                        onClick = { 
-                            val newQty = food.numberInCart + 1
-                            onQuantityChange(newQty)
-                        },
-                        modifier = Modifier.size(30.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple))
-                    ) {
-                        Text("+", fontSize = 14.sp)
-                    }
+                    Text("-", fontSize = 14.sp)
+                }
+                
+                Text(
+                    text = food.numberInCart.toString(),
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    fontSize = 16.sp
+                )
+                
+                Button(
+                    onClick = { 
+                        val newQty = food.numberInCart + 1
+                        onQuantityChange(newQty)
+                    },
+                    modifier = Modifier.size(30.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text("+", fontSize = 14.sp)
                 }
                 
                 Text(
