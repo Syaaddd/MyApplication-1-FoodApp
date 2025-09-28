@@ -33,6 +33,7 @@ import com.syadd.myapplication_1_foodapp.Helper.FavoriteManager
 import com.syadd.myapplication_1_foodapp.Helper.toRupiah
 import com.syadd.myapplication_1_foodapp.R
 import android.widget.Toast
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun FoodDetailScreen(
@@ -426,31 +427,35 @@ fun RecommendedFoodItem(food: FoodModel) {
                 )
             }
         }
-        
-        Button(
-            onClick = {
-                CartManager.addToCart(food)
-                // Tampilkan pesan bahwa makanan telah ditambahkan ke keranjang
-                Toast.makeText(context, "${food.Title} added to cart", Toast.LENGTH_SHORT).show()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .height(30.dp)
-                .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(8.dp)),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = colorResource(R.color.darkPurple),
-                contentColor = Color.White
-            ),
-            elevation = ButtonDefaults.elevation(defaultElevation = 2.dp),
-            shape = RoundedCornerShape(8.dp)
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
-            Text(
-                text = "Add",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium
-            )
+            Button(
+                onClick = {
+                    CartManager.addToCart(food)
+                    Toast.makeText(context, "${food.Title} added to cart", Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier
+                    .padding(top = 4.dp, end = 4.dp) // biar ada jarak kanan & atas
+                    .height(28.dp)
+                    .width(70.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colorResource(R.color.darkPurple),
+                    contentColor = Color.White
+                ),
+                elevation = ButtonDefaults.elevation(defaultElevation = 1.dp),
+                shape = RoundedCornerShape(6.dp)
+            ) {
+                Text(
+                    text = "Add",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
+
     }
 }
 
@@ -488,17 +493,17 @@ fun FoodDetailFooter(
             Button(
             onClick = onOrderClick,
             modifier = Modifier
-                .height(50.dp)
-                .weight(1f)
+                .height(30.dp)
+                .weight(0.7f)
                 .padding(start = 16.dp)
-                .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(16.dp)),
+                .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(8.dp)),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
             elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
         ) {
             Text(
-                text = "Place an Order",
+                text = "Add To Cart",
                 color = Color.White,
-                fontSize = 16.sp,
+                fontSize = 11.sp,
                 fontWeight = FontWeight.Bold
             )
         }

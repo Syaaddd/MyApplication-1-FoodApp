@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +30,10 @@ fun FoodDetailScreenWithId(
     var recommendations by remember { mutableStateOf<List<FoodModel>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isLoadingRecommendations by remember { mutableStateOf(true) }
+    
+    // For showing toast messages
+    val context = LocalContext.current
+    var toastMessage by remember { mutableStateOf<String?>(null) }
     
     // Mengambil data makanan dari Firebase
     LaunchedEffect(foodId) {
@@ -52,6 +57,14 @@ fun FoodDetailScreenWithId(
             // Jika ID tidak valid, gunakan data dummy
             foodItem = previewFood
             isLoading = false
+        }
+    }
+    
+    // Handle toast messages
+    toastMessage?.let { message ->
+        LaunchedEffect(message) {
+            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
+            toastMessage = null
         }
     }
     
@@ -83,6 +96,8 @@ fun FoodDetailScreenWithId(
                     },
                     onOrderClick = { orderedFood ->
                         CartManager.addToCart(orderedFood)
+                        // Set toast message to be shown
+                        toastMessage = "${orderedFood.Title} added to cart!"
                     }
                 )
             } else {

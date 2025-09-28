@@ -37,14 +37,19 @@ import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
-fun ItemsLIst(items:List<FoodModel>){
+fun ItemsLIst(items:List<FoodModel>, onAddToCart: (FoodModel) -> Unit = {}){
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)){
         itemsIndexed(items) { index, item->
-            Items(item = item)
+            Items(item = item, onAddToCart = { food ->
+                // Add item to cart functionality
+                com.syadd.myapplication_1_foodapp.Helper.CartManager.addToCart(food)
+                // Notify parent about the addition
+                onAddToCart(food)
+            })
         }
     }
 }
-fun Double.toRupiah(price: Double): String {
+fun Double.toRupiah(): String {
     val localeID = Locale("in", "ID")
     val format = NumberFormat.getCurrencyInstance(localeID)
     format.minimumFractionDigits = 0   // hilangkan ,00
@@ -60,7 +65,7 @@ fun ItemsListPreview(){
 }
 
 @Composable
-fun Items(item: FoodModel) {
+fun Items(item: FoodModel, onAddToCart: (FoodModel) -> Unit = {}) {
     val context= LocalContext.current
 
     Row(
@@ -72,12 +77,12 @@ fun Items(item: FoodModel) {
             .clickable{}
     ){
         FoodImage(item=item)
-        FoodDetail(item=item)
+        FoodDetail(item=item, onAddToCart=onAddToCart)
     }
 }
 
 @Composable
-fun RowScope.FoodDetail(item: FoodModel) {
+fun RowScope.FoodDetail(item: FoodModel, onAddToCart: (FoodModel) -> Unit = {}) {
     Column(modifier = Modifier
         .padding(start = 8.dp)
         .fillMaxWidth()
@@ -94,18 +99,18 @@ fun RowScope.FoodDetail(item: FoodModel) {
         )
         TimingRow(item.TimeValue)
         RatingBarRow(item.Star)
-        PriceRow(item.Price)
+        PriceRow(item, onAddToCart)
     }
 }
 
 @Composable
-fun PriceRow(price: Double) {
+fun PriceRow(item: FoodModel, onAddToCart: (FoodModel) -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(top = 8.dp)
     ) {
         Text(
-            text = price.toRupiah(price),
+            text = item.Price.toRupiah(),
             color = colorResource(R.color.darkPurple),
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
@@ -114,15 +119,16 @@ fun PriceRow(price: Double) {
         Text(
             text = "+ Add",
             color = Color.White,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .padding(8.dp)
                 .background(
                     color = colorResource(R.color.darkPurple),
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(8.dp)
                 )
-                .padding(horizontal = 12.dp, vertical = 4.dp)
+                .clickable { onAddToCart(item) }
+                .padding(horizontal = 8.dp, vertical = 2.dp)
         )
     }
 }

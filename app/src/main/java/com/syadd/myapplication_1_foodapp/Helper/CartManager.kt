@@ -11,16 +11,16 @@ object CartManager {
 
     fun addToCart(food: FoodModel) {
         val currentCart = cartItems.get()
-        val existingItem = currentCart.find { it.Id == food.Id }
+        val existingItemIndex = currentCart.indexOfFirst { it.Id == food.Id }
         
-        if (existingItem != null) {
+        if (existingItemIndex != -1) {
             // Jika makanan sudah ada di keranjang, tambahkan jumlahnya
-            existingItem.numberInCart++
+            val updatedItem = currentCart[existingItemIndex].copy(numberInCart = currentCart[existingItemIndex].numberInCart + 1)
+            currentCart[existingItemIndex] = updatedItem
         } else {
             // Jika makanan belum ada di keranjang, tambahkan sebagai item baru
-            val foodCopy = food.copy()
-            foodCopy.numberInCart = 1
-            currentCart.add(foodCopy)
+            val foodWithQuantity = food.copy(numberInCart = 1)
+            currentCart.add(foodWithQuantity)
         }
         
         cartItems.set(currentCart)
@@ -28,8 +28,8 @@ object CartManager {
 
     fun removeFromCart(foodId: Int) {
         val currentCart = cartItems.get()
-        currentCart.removeAll { it.Id == foodId }
-        cartItems.set(currentCart)
+        val updatedCart = currentCart.filter { it.Id != foodId }.toMutableList()
+        cartItems.set(updatedCart)
     }
 
     fun updateQuantity(foodId: Int, newQuantity: Int) {
@@ -39,13 +39,13 @@ object CartManager {
         }
         
         val currentCart = cartItems.get()
-        val existingItem = currentCart.find { it.Id == foodId }
+        val existingItemIndex = currentCart.indexOfFirst { it.Id == foodId }
         
-        existingItem?.let {
-            it.numberInCart = newQuantity
+        if (existingItemIndex != -1) {
+            val updatedItem = currentCart[existingItemIndex].copy(numberInCart = newQuantity)
+            currentCart[existingItemIndex] = updatedItem
+            cartItems.set(currentCart)
         }
-        
-        cartItems.set(currentCart)
     }
 
     fun getCartItems(): List<FoodModel> = cartItems.get().toList()

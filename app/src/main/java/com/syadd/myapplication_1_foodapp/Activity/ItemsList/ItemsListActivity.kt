@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.syadd.myapplication_1_foodapp.ViewModel.MainViewModel
 import com.syadd.myapplication_1_foodapp.R
+import com.syadd.myapplication_1_foodapp.Domain.FoodModel
 
 class ItemsListActivity : AppCompatActivity() {
     private val viewModel = MainViewModel()
@@ -112,8 +114,32 @@ class ItemsListActivity : AppCompatActivity() {
                     CircularProgressIndicator()
                 }
             }else{
-                ItemsLIst(items)
+                ItemsLIstWithNotification(items)
             }
         }
+    }
+    
+    @Composable
+    private fun ItemsLIstWithNotification(items: List<FoodModel>) {
+        // For showing toast messages
+        val context = LocalContext.current
+        var toastMessage by remember { mutableStateOf<String?>(null) }
+        
+        // Handle toast messages
+        toastMessage?.let { message ->
+            LaunchedEffect(message) {
+                android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
+                toastMessage = null
+            }
+        }
+        
+        ItemsLIst(
+            items = items,
+            onAddToCart = { food ->
+                com.syadd.myapplication_1_foodapp.Helper.CartManager.addToCart(food)
+                // Set toast message to be shown
+                toastMessage = "${food.Title} added to cart!"
+            }
+        )
     }
 }

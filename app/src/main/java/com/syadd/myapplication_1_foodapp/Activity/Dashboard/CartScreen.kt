@@ -1,3 +1,5 @@
+package com.syadd.myapplication_1_foodapp.Activity.Dashboard
+
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,11 +33,15 @@ import com.syadd.myapplication_1_foodapp.ViewModel.MainViewModel
 fun CartScreen(navController: NavController) {
     var cartItems by remember { mutableStateOf(CartManager.getCartItems()) }
     
-    // Update cart items whenever there are changes
-    LaunchedEffect(Unit) {
-        // We would typically use a state holder here to listen for cart changes
-        // For simplicity, we'll just update on composition
+    // Observe cart changes using a unique counter to trigger recomposition
+    var cartVersion by remember { mutableStateOf(0) }
+    LaunchedEffect(cartVersion) {
         cartItems = CartManager.getCartItems()
+    }
+    
+    // Function to refresh cart items
+    val refreshCart = {
+        cartVersion++
     }
     
     Scaffold(
@@ -83,7 +89,8 @@ fun CartScreen(navController: NavController) {
                     items(cartItems) { food ->
                         CartItem(food = food, onQuantityChange = { newQty ->
                             CartManager.updateQuantity(food.Id, newQty)
-                            cartItems = CartManager.getCartItems() // Update the displayed list
+                            // Refresh the cart items to update the UI
+                            refreshCart()
                         })
                     }
                 }
