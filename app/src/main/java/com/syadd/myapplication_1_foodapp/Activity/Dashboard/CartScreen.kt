@@ -32,19 +32,17 @@ import com.syadd.myapplication_1_foodapp.ViewModel.MainViewModel
 @Composable
 fun CartScreen(navController: NavController) {
     var cartItems by remember { mutableStateOf(CartManager.getCartItems()) }
-    
-    // Observe cart changes using a unique counter to trigger recomposition
+
+    // Observe cart changes
     var cartVersion by remember { mutableStateOf(0) }
     LaunchedEffect(cartVersion) {
         cartItems = CartManager.getCartItems()
     }
-    
-    // Function to refresh cart items
-    val refreshCart = {
-        cartVersion++
-    }
-    
+
+    val refreshCart = { cartVersion++ }
+
     Scaffold(
+        backgroundColor = colorResource(R.color.lightGrey), // ⬅️ warna latar belakang global
         topBar = {
             TopAppBar(
                 title = { Text("Your Cart", color = colorResource(R.color.darkPurple)) },
@@ -57,7 +55,10 @@ fun CartScreen(navController: NavController) {
                         )
                     }
                 },
-                backgroundColor = Color.White
+                backgroundColor = Color.White, // AppBar putih
+                elevation = 4.dp,
+                modifier = Modifier
+                    .statusBarsPadding() // ⬅️ bikin turun sesuai status bar
             )
         }
     ) { paddingValues ->
@@ -79,7 +80,7 @@ fun CartScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .background(colorResource(R.color.lightGrey))
+                // ❌ hapus .background() di sini supaya tidak double layer
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -89,13 +90,12 @@ fun CartScreen(navController: NavController) {
                     items(cartItems) { food ->
                         CartItem(food = food, onQuantityChange = { newQty ->
                             CartManager.updateQuantity(food.Id, newQty)
-                            // Refresh the cart items to update the UI
                             refreshCart()
                         })
                     }
                 }
-                
-                // Total and checkout section
+
+                // Bagian total dan checkout
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -120,32 +120,34 @@ fun CartScreen(navController: NavController) {
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        
+
                         Button(
-                onClick = {
-                    // Di sini Anda bisa menambahkan logika untuk checkout
-                },
-                modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-                    .padding(start = 16.dp)
-                    .background(colorResource(R.color.darkPurple), shape = RoundedCornerShape(16.dp)),
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
-                elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
-            ) {
-                Text(
-                    text = "Checkout",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                            onClick = {
+                                // Tambahkan logika checkout di sini
+                            },
+                            modifier = Modifier
+                                .height(50.dp)
+                                .width(140.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = colorResource(R.color.darkPurple)
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                            elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
+                        ) {
+                            Text(
+                                text = "Checkout",
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun CartItem(food: FoodModel, onQuantityChange: (Int) -> Unit) {
@@ -168,7 +170,7 @@ fun CartItem(food: FoodModel, onQuantityChange: (Int) -> Unit) {
                     .size(80.dp)
                     .padding(end = 8.dp)
             )
-            
+
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -180,7 +182,7 @@ fun CartItem(food: FoodModel, onQuantityChange: (Int) -> Unit) {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 Text(
                     text = food.Price.toRupiah(),
                     color = colorResource(R.color.darkPurple),
@@ -189,47 +191,64 @@ fun CartItem(food: FoodModel, onQuantityChange: (Int) -> Unit) {
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
-            
+
+            // Quantity controls
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(end = 4.dp)
             ) {
-                // Quantity controls
+                // + Button
                 Button(
-                    onClick = { 
-                        val newQty = food.numberInCart - 1
-                        onQuantityChange(newQty)
-                    },
-                    modifier = Modifier.size(30.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text("-", fontSize = 14.sp)
-                }
-                
-                Text(
-                    text = food.numberInCart.toString(),
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    fontSize = 16.sp
-                )
-                
-                Button(
-                    onClick = { 
+                    onClick = {
                         val newQty = food.numberInCart + 1
                         onQuantityChange(newQty)
                     },
                     modifier = Modifier.size(30.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text("+", fontSize = 14.sp)
+                    Text("+", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                 }
-                
+
+                // Quantity text
+                Text(
+                    text = food.numberInCart.toString(),
+                    color = colorResource(R.color.darkPurple),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(vertical = 6.dp)
+                )
+
+                // - Button
+                Button(
+                    onClick = {
+                        val newQty = food.numberInCart - 1
+                        if (newQty > 0) {
+                            // Kurangi quantity biasa
+                            onQuantityChange(newQty)
+                        } else {
+                            // Jika 1 → hapus item dari cart
+                            CartManager.removeFromCart(food.Id)
+                            onQuantityChange(0)
+                        }
+                    },
+                    modifier = Modifier.size(30.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text("-", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                }
+
+                // Total price
                 Text(
                     text = (food.Price * food.numberInCart).toRupiah(),
                     color = colorResource(R.color.darkPurple),
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier.padding(top = 6.dp)
                 )
             }
         }

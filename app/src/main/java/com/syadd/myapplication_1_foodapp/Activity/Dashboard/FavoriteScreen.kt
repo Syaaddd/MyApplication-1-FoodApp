@@ -35,25 +35,25 @@ import com.syadd.myapplication_1_foodapp.ViewModel.MainViewModel
 fun FavoriteScreen(navController: NavController) {
     val viewModel = MainViewModel()
     var favoriteFoods by remember { mutableStateOf<List<FoodModel>>(emptyList()) }
-    
-    // Load favorite foods whenever the screen recomposes
+
+    // Load favorite foods once
     LaunchedEffect(Unit) {
         val favoriteIds = FavoriteManager.getFavoriteFoodIds()
-        favoriteFoods = emptyList() // Clear previous
-        
-        // For each favorite ID, load the corresponding food data
+        favoriteFoods = emptyList()
+
         val foods = mutableListOf<FoodModel>()
         favoriteIds.forEach { id ->
             viewModel.loadFoodDetail(id).observeForever { food ->
                 if (food != null) {
                     foods.add(food)
-                    favoriteFoods = foods.toList() // Update the state
+                    favoriteFoods = foods.toList()
                 }
             }
         }
     }
-    
+
     Scaffold(
+        backgroundColor = colorResource(R.color.lightGrey),
         topBar = {
             TopAppBar(
                 title = { Text("Favorites", color = colorResource(R.color.darkPurple)) },
@@ -66,7 +66,9 @@ fun FavoriteScreen(navController: NavController) {
                         )
                     }
                 },
-                backgroundColor = Color.White
+                backgroundColor = Color.White,
+                elevation = 4.dp,
+                modifier = Modifier.statusBarsPadding() // 👈 tambahkan ini
             )
         }
     ) { paddingValues ->
@@ -88,15 +90,14 @@ fun FavoriteScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .background(colorResource(R.color.lightGrey))
-                    .padding(8.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                // ❌ Hapus .background(colorResource(R.color.lightGrey))
             ) {
                 items(favoriteFoods) { food ->
                     FavoriteItem(
                         food = food,
-                        onRemoveFromFavorite = { 
+                        onRemoveFromFavorite = {
                             FavoriteManager.removeFromFavorites(food.Id)
-                            // Update the list after removing
                             favoriteFoods = favoriteFoods.filter { it.Id != food.Id }
                         },
                         onClick = {
@@ -108,6 +109,7 @@ fun FavoriteScreen(navController: NavController) {
         }
     }
 }
+
 
 @Composable
 fun FavoriteItem(

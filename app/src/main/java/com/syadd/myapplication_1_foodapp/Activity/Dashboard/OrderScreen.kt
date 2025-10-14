@@ -20,6 +20,7 @@ import com.syadd.myapplication_1_foodapp.R
 @Composable
 fun OrderScreen(navController: NavController) {
     Scaffold(
+        backgroundColor = colorResource(R.color.lightGrey), // ⬅️ background utama
         topBar = {
             TopAppBar(
                 title = { Text("My Orders", color = colorResource(R.color.darkPurple)) },
@@ -32,7 +33,10 @@ fun OrderScreen(navController: NavController) {
                         )
                     }
                 },
-                backgroundColor = Color.White
+                backgroundColor = Color.White, // ⬅️ warna AppBar
+                elevation = 4.dp,
+                modifier = Modifier
+                    .statusBarsPadding() // ⬅️ Bikin AppBar agak turun dari status bar
             )
         }
     ) { paddingValues ->
@@ -40,7 +44,8 @@ fun OrderScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(colorResource(R.color.lightGrey)),
+                // ❌ jangan pakai .background() di sini kalau sudah set di Scaffold
+                .padding(top = 20.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -52,18 +57,18 @@ fun OrderScreen(navController: NavController) {
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 Text(
                     text = "You don't have any orders yet",
                     color = Color.Gray,
                     fontSize = 16.sp
                 )
-                
+
                 Button(
-                    onClick = { 
-                        // Navigasi ke halaman utama untuk memesan makanan
+                    onClick = {
+                        // Navigasi ke halaman utama
                         navController.navigate("main") {
                             popUpTo("main") { inclusive = true }
                         }
@@ -71,8 +76,9 @@ fun OrderScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(top = 24.dp)
                         .height(50.dp)
-                        .background(colorResource(R.color.darkPurple), shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)),
+                        .width(200.dp), // biar simetris
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.darkPurple)),
+                    shape = RoundedCornerShape(16.dp),
                     elevation = ButtonDefaults.elevation(defaultElevation = 4.dp)
                 ) {
                     Text(
