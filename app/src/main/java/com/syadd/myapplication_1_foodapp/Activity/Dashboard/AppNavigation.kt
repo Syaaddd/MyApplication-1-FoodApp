@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.syadd.myapplication_1_foodapp.Activity.Admin.AdminAppNavigation
 
 @Composable
 fun AppNavigation() {
@@ -30,6 +31,10 @@ fun AppNavigation() {
             CartScreen(navController)
         }
         
+        composable("checkout") {
+            CheckoutScreen(navController)
+        }
+        
         composable("favorite") {
             FavoriteScreen(navController)
         }
@@ -40,6 +45,10 @@ fun AppNavigation() {
         
         composable("profile") {
             ProfileScreen(navController)
+        }
+        
+        composable("admin") {
+            AdminAppNavigation()
         }
     }
 }

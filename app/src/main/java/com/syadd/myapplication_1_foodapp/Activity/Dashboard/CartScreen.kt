@@ -123,7 +123,7 @@ fun CartScreen(navController: NavController) {
 
                         Button(
                             onClick = {
-                                // Tambahkan logika checkout di sini
+                                navController.navigate("checkout")
                             },
                             modifier = Modifier
                                 .height(50.dp)

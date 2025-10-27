@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.ItemsList.ItemsListActivity" />
+        <activity android:name=".Activity.Admin.AdminActivity" />
     </application>
 
 </manifest>

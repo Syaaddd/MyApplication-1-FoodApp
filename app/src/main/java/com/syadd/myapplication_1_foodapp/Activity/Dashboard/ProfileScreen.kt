@@ -103,6 +103,11 @@ fun ProfileScreen(navController: NavController) {
                 ProfileOption(title = "Settings", onClick = { /* Handle settings */ })
                 ProfileOption(title = "Help & Support", onClick = { /* Handle help & support */ })
                 ProfileOption(title = "About", onClick = { /* Handle about */ })
+                
+                // Admin access (only for development/testing purposes)
+                ProfileOption(title = "Admin Panel", onClick = { 
+                    navController.navigate("admin")
+                })
             }
         }
     }

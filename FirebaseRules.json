@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "Category": {
+      ".read": "true",
+      ".write": "true"
+    },
+    "Foods": {
+      ".read": "true",
+      ".write": "true",
+      ".indexOn": ["BestFood", "Id", "CategoryId"]
+    },
+    "Orders": {
+      ".read": "true",
+      ".write": "true"
+    }
+  }
+}

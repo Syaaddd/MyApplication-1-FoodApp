@@ -1,0 +1,51 @@
+{
+  "Orders": {
+    "ORDER_ID_1": {
+      "orderId": "ORDER_ID_1",
+      "customerId": "user_123",
+      "customerName": "John Doe",
+      "customerPhone": "+6281234567890",
+      "customerAddress": "Jl. Merdeka No. 123, Jakarta",
+      "orderItems": {
+        "ITEM_ID_1": {
+          "foodId": 1,
+          "foodName": "Burger",
+          "foodPrice": 25000.0,
+          "quantity": 2,
+          "imagePath": "https://example.com/burger.jpg"
+        },
+        "ITEM_ID_2": {
+          "foodId": 2,
+          "foodName": "French Fries",
+          "foodPrice": 15000.0,
+          "quantity": 1,
+          "imagePath": "https://example.com/fries.jpg"
+        }
+      },
+      "totalAmount": 70000.0,
+      "status": "PENDING",
+      "orderTime": 1678886400000,
+      "estimatedDeliveryTime": 1678890000000
+    },
+    "ORDER_ID_2": {
+      "orderId": "ORDER_ID_2",
+      "customerId": "user_456",
+      "customerName": "Jane Smith",
+      "customerPhone": "+6289876543210",
+      "customerAddress": "Jl. Sudirman No. 45, Jakarta",
+      "orderItems": {
+        "ITEM_ID_3": {
+          "foodId": 3,
+          "foodName": "Pizza",
+          "foodPrice": 65000.0,
+          "quantity": 1,
+          "imagePath": "https://example.com/pizza.jpg"
+        }
+      },
+      "totalAmount": 65000.0,
+      "status": "CONFIRMED",
+      "orderTime": 1678790400000,
+      "estimatedDeliveryTime": 1678804800000
+    }
+  }
+}
